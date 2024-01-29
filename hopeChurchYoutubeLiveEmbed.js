@@ -9,11 +9,11 @@
 
   function onApiLoad() {
     if (gapi.client && gapi.client.youtube) {
-      getUpcomingStreams(CHANNEL_ID)
-        .then(upcomingStreams => {
-          if (upcomingStreams && upcomingStreams.length > 0) {
-            const originalUrl = 'https://youtube.com/live/XArss6ebXjY';
-            const newUrl = replaceVideoId(originalUrl, upcomingStreams[0]);
+      getUpcomingStreamVideoId(CHANNEL_ID)
+        .then(upcomingStreamVideoId => {
+          if (upcomingStreamVideoId) {
+            const originalUrl = 'https://youtube.com/live/VIDEO_ID';
+            const newUrl = originalUrl.replace('VIDEO_ID', upcomingStreamVideoId);
   
             // Embed the YouTube player with the new URL
             const playerDiv = document.getElementById('player');
@@ -21,7 +21,7 @@
   
             console.log('Updated URL:', newUrl);
           } else {
-            console.log('No upcoming streams found.');
+            console.log('No upcoming livestream found.');
           }
         })
         .catch(error => {
@@ -32,7 +32,7 @@
     }
   }
 
-  async function getUpcomingStreams(channelId) {
+  async function getUpcomingStreamVideoId(channelId) {
     try {
       const response = await gapi.client.youtube.search.list({
         part: 'id',
@@ -41,15 +41,9 @@
         type: 'video',
       });
 
-      const upcomingStreams = response?.result?.items?.map(item => item.id.videoId) || [];
-      return upcomingStreams;
+      const upcomingStreamVideoId = response?.result?.items?.[0]?.id?.videoId;
+      return upcomingStreamVideoId;
     } catch (error) {
-      throw new Error('Failed to fetch upcoming streams: ' + error.message);
+      throw new Error('Failed to fetch upcoming stream video ID: ' + error.message);
     }
-  }
-
-  function replaceVideoId(url, newVideoId) {
-    const urlObj = new URL(url);
-    urlObj.searchParams.set('v', newVideoId);
-    return urlObj.toString();
   }
