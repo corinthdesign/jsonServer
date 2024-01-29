@@ -1,16 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>YouTube API Example with Embedded Player</title>
-</head>
-<body>
-
-<!-- Embedded YouTube Player -->
-<div id="player"></div>
-
-<script>
   // Set up your API key and YouTube channel ID
   const API_KEY = 'AIzaSyCHS4L8HmcPQYwOcGFZrWAqlUrBQKt7b3E';
   const CHANNEL_ID = 'UC5dIymK_x_NSNdqE7P5FETQ';
@@ -66,10 +53,3 @@
     urlObj.searchParams.set('v', newVideoId);
     return urlObj.toString();
   }
-</script>
-
-<!-- Load the YouTube API client and Iframe API asynchronously -->
-<script src="https://apis.google.com/js/api.js?onload=onYouTubeApiLoad"></script>
-
-</body>
-</html>
